@@ -6,29 +6,42 @@ import com.example.efkon.view.WalletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/wallet")
+@RequestMapping("api/dashboard")
 public class WalletController {
     @Autowired
     WalletService walletService;
 
-    @GetMapping("/")
-    public ResponseEntity<List<WalletResponse>> getWallets() {
-        List<WalletResponse> list = walletService.getNoOfWallets();
+    @GetMapping("/wallet/{customerType}")
+    public ResponseEntity<List<WalletResponse>> fetchWalletCountByCustomerType(@PathVariable("customerType") Integer customerType)
+    {
+        List<WalletResponse> list=walletService.fetchWalletCountByCustomerType(customerType);
+        return new ResponseEntity<List<WalletResponse>>(list,HttpStatus.OK);
+    }
+
+    @GetMapping("/wallet")
+    public ResponseEntity<List<WalletResponse>> fetchWalletCountGroupByCustomerType() {
+        List<WalletResponse> list = walletService.fetchWalletCountGroupByCustomerType();
         return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/date")
-    public ResponseEntity<List<WalletResponse>> getWalletsByDate()
+    @GetMapping("wallet/date")
+    public ResponseEntity<List<WalletResponse>> fetchWalletCountByDateAndGroupByCustomerType(@RequestParam("date")String date) throws ParseException
     {
-        List<WalletResponse> list= walletService.getNoOfWalletsByDate();
+        List<WalletResponse> list= walletService.fetchWalletCountByDateAndGroupByCustomerType(date);
+        return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
+    }
+
+
+    @GetMapping("wallet/{customerType}/date")
+    public ResponseEntity<List<WalletResponse>> fetchWalletCountByDateAndByCustomerType(@PathVariable("customerType") Integer customerType,@RequestParam("date")String date) throws ParseException
+    {
+        List<WalletResponse> list= walletService.fetchWalletCountByDateAndByCustomerType(customerType,date);
         return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
     }
 

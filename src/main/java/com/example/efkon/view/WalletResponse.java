@@ -1,8 +1,13 @@
 package com.example.efkon.view;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.persistence.criteria.CriteriaBuilder;
+
+@JsonInclude(value = JsonInclude.Include.NON_ABSENT)
 public class WalletResponse {
 
-    int counts;
+    Integer count;
     Integer customerType;
     String customerTypeStr;
 
@@ -11,8 +16,8 @@ public class WalletResponse {
 
     }
 
-    public WalletResponse(int counts, Integer customerType, String customerTypeStr) {
-        this.counts = counts;
+    public WalletResponse(Integer counts, Integer customerType, String customerTypeStr) {
+        this.count = count;
         this.customerType = customerType;
         this.customerTypeStr = customerTypeStr;
     }
@@ -35,12 +40,11 @@ public class WalletResponse {
         this.customerTypeStr = customerTypeStr;
     }
 
-
     public int getCount() {
-        return counts;
+        return count;
     }
 
     public void setCount(int count) {
-        this.counts = count;
+        this.count = count;
     }
 }

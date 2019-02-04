@@ -2,44 +2,24 @@ package com.example.efkon.view;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.Entity;
-
 @JsonInclude(value = JsonInclude.Include.NON_ABSENT)
-public class TagResponse {
+public class TxnResponse {
     Integer status;
     String statusDesc;
     Integer count;
     Integer customerType;
     String customerTypeStr;
 
-    public TagResponse()
+    public TxnResponse()
     {
 
     }
 
-    public TagResponse(Integer status, String statusDesc, Integer count, Integer customerType, String customerTypeStr) {
+    public TxnResponse(Integer status, String statusDesc, Integer count, Integer customerType, String customerTypeStr) {
         this.status = status;
         this.statusDesc = statusDesc;
         this.count = count;
         this.customerType = customerType;
-        this.customerTypeStr = customerTypeStr;
-    }
-
-    public Integer getCustomerType() {
-        return customerType;
-    }
-
-    public void setCustomerType(Integer customerType) {
-        this.customerTypeStr = customerType==1?"Retailer": "Corporate";
-        this.customerType = customerType;
-    }
-
-    public String getCustomerTypeStr() {
-        return customerTypeStr;
-    }
-
-    public void setCustomerTypeStr(String customerTypeStr) {
-
         this.customerTypeStr = customerTypeStr;
     }
 
@@ -59,11 +39,27 @@ public class TagResponse {
         this.statusDesc = statusDesc;
     }
 
-    public int getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public Integer getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(Integer customerType) {
+        this.customerType = customerType;
+    }
+
+    public String getCustomerTypeStr() {
+        return customerTypeStr;
+    }
+
+    public void setCustomerTypeStr(String customerTypeStr) {
+        this.customerTypeStr = customerTypeStr;
     }
 }
