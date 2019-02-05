@@ -11,9 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Repository
 public class TxnDaoImpl implements TxnDao {
@@ -24,11 +22,12 @@ public class TxnDaoImpl implements TxnDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);
         Date parsedDate = sdf.parse(date);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedDate= changedFormat.format(parsedDate);
-
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT count(distinct txn.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc FROM [dbo].[TXN_ISSUER_DETAIL] txn inner join [dbo].[MD_SM_CARD] sm_card on txn.TAG_ID = sm_card.TAG_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where txn.CREATED_AT like '%"+ changedDate +"%' and sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC]");
+        Query query = session.createSQLQuery("SELECT count(distinct txn.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc FROM [dbo].[TXN_ISSUER_DETAIL] txn inner join [dbo].[MD_SM_CARD] sm_card on txn.TAG_ID = sm_card.TAG_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where MONTH(txn.CREATED_AT)='"+month+"' and YEAR(txn.CREATED_AT)='"+year+"' and sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC]");
         return query.setResultTransformer(Transformers.aliasToBean(TxnResponse.class))
                 .list();
     }
@@ -38,11 +37,13 @@ public class TxnDaoImpl implements TxnDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);
         Date parsedDate = sdf.parse(date);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedDate= changedFormat.format(parsedDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
 
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT count(distinct txn.[TAG_ID]) count  FROM [dbo].[TXN_ISSUER_DETAIL] txn where txn.CREATED_AT like '%"+ changedDate+"%' and txn.TAG_ID IS NOT NULL and txn.TAG_ID != ''");
+        Query query = session.createSQLQuery("SELECT count(distinct txn.[TAG_ID]) count  FROM [dbo].[TXN_ISSUER_DETAIL] txn where (MONTH(txn.CREATED_AT)='"+ month +"' and YEAR(txn.CREATED_AT)='"+ year +"') and txn.TAG_ID IS NOT NULL and txn.TAG_ID != ''");
         return (Integer) query.uniqueResult();
     }
 
@@ -58,10 +59,12 @@ public class TxnDaoImpl implements TxnDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);
         Date parsedDate = sdf.parse(date);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedDate= changedFormat.format(parsedDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT  count(distinct txn.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc FROM [dbo].[TXN_ISSUER_DETAIL] txn inner join [dbo].[MD_SM_CARD] sm_card inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID on txn.TAG_ID = sm_card.TAG_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where txn.CREATED_AT like '%"+ changedDate+"%' and sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' and sm_cust.CUST_TYPE=:CUST_TYPE group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC]");
+        Query query = session.createSQLQuery("SELECT  count(distinct txn.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc FROM [dbo].[TXN_ISSUER_DETAIL] txn inner join [dbo].[MD_SM_CARD] sm_card inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID on txn.TAG_ID = sm_card.TAG_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where MONTH(txn.CREATED_AT)='"+month+"' and YEAR(txn.CREATED_AT)='"+year+"' and sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' and sm_cust.CUST_TYPE=:CUST_TYPE group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC]");
         query.setParameter("CUST_TYPE",customerType);
         return query.setResultTransformer(Transformers.aliasToBean(TxnResponse.class))
                 .list();
@@ -72,10 +75,12 @@ public class TxnDaoImpl implements TxnDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);
         Date parsedDate = sdf.parse(date);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedDate= changedFormat.format(parsedDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT  count(distinct txn.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc,sm_cust.[CUST_TYPE] customerType FROM [dbo].[TXN_ISSUER_DETAIL] txn inner join [dbo].[MD_SM_CARD] sm_card inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID on txn.TAG_ID = sm_card.TAG_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where txn.CREATED_AT like '%"+ changedDate+"%' and sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC],sm_cust.[CUST_TYPE]");
+        Query query = session.createSQLQuery("SELECT  count(distinct txn.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc,sm_cust.[CUST_TYPE] customerType FROM [dbo].[TXN_ISSUER_DETAIL] txn inner join [dbo].[MD_SM_CARD] sm_card inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID on txn.TAG_ID = sm_card.TAG_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where MONTH(txn.CREATED_AT)='"+month+"' and YEAR(txn.CREATED_AT)='"+year+"' and sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC],sm_cust.[CUST_TYPE]");
         return query.setResultTransformer(Transformers.aliasToBean(TxnResponse.class))
                 .list();
     }
@@ -125,12 +130,18 @@ public class TxnDaoImpl implements TxnDao {
         Date parsedFirstDate = sdf.parse(firstdate);
         Date parsedSecondDate = sdf.parse(seconddate);
         Date parsedThirdDate = sdf.parse(thirddate);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedFirstDate= changedFormat.format(parsedFirstDate);
-        String changedSecondDate= changedFormat.format(parsedSecondDate);
-        String changedThirdDate= changedFormat.format(parsedThirdDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedFirstDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
+        Cal.setTime(parsedSecondDate);
+        Integer monthofseconddate=Cal.get(Calendar.MONTH)+1;
+        Integer yearofseconddate=Cal.get(Calendar.YEAR);
+        Cal.setTime(parsedThirdDate);
+        Integer monthofthirddate=Cal.get(Calendar.MONTH)+1;
+        Integer yearofthirddate=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT count(distinct txn.[TAG_ID]) FROM [dbo].[TXN_ISSUER_DETAIL] txn inner join [dbo].[MD_SM_CARD] sm_card on txn.TAG_ID = sm_card.TAG_ID  where txn.TAG_ID IS NOT NULL and txn.TAG_ID != '' and (CONVERT(VARCHAR(25), txn.CREATED_AT, 126)  like '%"+changedFirstDate+"%' or CONVERT(VARCHAR(25), txn.CREATED_AT, 126)  like '%"+changedSecondDate+"%' or CONVERT(VARCHAR(25), txn.CREATED_AT, 126)  like '%"+changedThirdDate+"%')");
+        Query query = session.createSQLQuery("SELECT count(distinct txn.[TAG_ID]) FROM [dbo].[TXN_ISSUER_DETAIL] txn inner join [dbo].[MD_SM_CARD] sm_card on txn.TAG_ID = sm_card.TAG_ID  where txn.TAG_ID IS NOT NULL and txn.TAG_ID != '' and ( MONTH(txn.CREATED_AT)='"+month+"' and YEAR(txn.CREATED_AT)='"+year+"' )or  MONTH(txn.CREATED_AT)='"+monthofseconddate+"' and YEAR(txn.CREATED_AT)='"+yearofseconddate+"' or  MONTH(txn.CREATED_AT)='"+monthofthirddate+"' and YEAR(txn.CREATED_AT)='"+yearofthirddate+"')");
         return query
                 .list();
     }
@@ -143,11 +154,18 @@ public class TxnDaoImpl implements TxnDao {
         Date parsedSecondDate = sdf.parse(seconddate);
         Date parsedThirdDate = sdf.parse(thirddate);
         SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedFirstDate= changedFormat.format(parsedFirstDate);
-        String changedSecondDate= changedFormat.format(parsedSecondDate);
-        String changedThirdDate= changedFormat.format(parsedThirdDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedFirstDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
+        Cal.setTime(parsedSecondDate);
+        Integer monthofseconddate=Cal.get(Calendar.MONTH)+1;
+        Integer yearofseconddate=Cal.get(Calendar.YEAR);
+        Cal.setTime(parsedThirdDate);
+        Integer monthofthirddate=Cal.get(Calendar.MONTH)+1;
+        Integer yearofthirddate=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT count(distinct txn.[TAG_ID])  FROM [dbo].[TXN_ISSUER_DETAIL] txn inner join [dbo].[MD_SM_CARD] sm_card on txn.TAG_ID = sm_card.TAG_ID inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID  where txn.TAG_ID IS NOT NULL and txn.TAG_ID != '' and sm_cust.CUST_TYPE=:CUST_TYPE and (CONVERT(VARCHAR(25), txn.CREATED_AT, 126)  like '%"+changedFirstDate+"%' or CONVERT(VARCHAR(25), txn.CREATED_AT, 126)  like '%"+changedSecondDate+"%' or CONVERT(VARCHAR(25), txn.CREATED_AT, 126)  like '%"+changedThirdDate+"%')");
+        Query query = session.createSQLQuery("SELECT count(distinct txn.[TAG_ID])  FROM [dbo].[TXN_ISSUER_DETAIL] txn inner join [dbo].[MD_SM_CARD] sm_card on txn.TAG_ID = sm_card.TAG_ID inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID  where txn.TAG_ID IS NOT NULL and txn.TAG_ID != '' and sm_cust.CUST_TYPE=:CUST_TYPE and ( MONTH(txn.CREATED_AT)='"+month+"' and YEAR(txn.CREATED_AT)='"+year+"' )or  MONTH(txn.CREATED_AT)='"+monthofseconddate+"' and YEAR(txn.CREATED_AT)='"+yearofseconddate+"' or  MONTH(txn.CREATED_AT)='"+monthofthirddate+"' and YEAR(txn.CREATED_AT)='"+yearofthirddate+"')");
 
         query.setParameter("CUST_TYPE",customerType);
         return query
