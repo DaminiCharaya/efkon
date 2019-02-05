@@ -1,6 +1,7 @@
 package com.example.efkon.controller;
 
 
+import com.example.efkon.ex.NotFoundException;
 import com.example.efkon.service.WalletService;
 import com.example.efkon.view.WalletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,20 @@ public class WalletController {
     public ResponseEntity<List<WalletResponse>> fetchWalletCountByCustomerType(@PathVariable("customerType") Integer customerType)
     {
         List<WalletResponse> list=walletService.fetchWalletCountByCustomerType(customerType);
+        if (list== null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
         return new ResponseEntity<List<WalletResponse>>(list,HttpStatus.OK);
     }
 
     @GetMapping("/wallet")
     public ResponseEntity<List<WalletResponse>> fetchWalletCountGroupByCustomerType() {
         List<WalletResponse> list = walletService.fetchWalletCountGroupByCustomerType();
+        if (list== null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
         return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
     }
 
@@ -34,6 +43,10 @@ public class WalletController {
     public ResponseEntity<List<WalletResponse>> fetchWalletCountByDateAndGroupByCustomerType(@RequestParam("date")String date) throws ParseException
     {
         List<WalletResponse> list= walletService.fetchWalletCountByDateAndGroupByCustomerType(date);
+        if (list== null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
         return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
     }
 
@@ -42,6 +55,10 @@ public class WalletController {
     public ResponseEntity<List<WalletResponse>> fetchWalletCountByDateAndByCustomerType(@PathVariable("customerType") Integer customerType,@RequestParam("date")String date) throws ParseException
     {
         List<WalletResponse> list= walletService.fetchWalletCountByDateAndByCustomerType(customerType,date);
+        if (list== null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
         return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
     }
 
@@ -63,6 +80,10 @@ public class WalletController {
     public ResponseEntity<List<WalletResponse>> fetchNoOfWalletByBalanceAndGroupByCustomerType()
     {
         List<WalletResponse> list= walletService.fetchNoOfWalletByBalanceAndGroupByCustomerType();
+        if (list== null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
         return  new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
     }
 
@@ -78,6 +99,10 @@ public class WalletController {
     {
 
         List<WalletResponse> list= walletService.fetchNoOfWalletByBalanceAndGroupByCustomerTypeAndByDate(date);
+        if (list== null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
         return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
     }
     @GetMapping("wallets/{customerType}/date")
