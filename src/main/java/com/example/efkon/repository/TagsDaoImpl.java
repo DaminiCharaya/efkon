@@ -13,9 +13,8 @@ import javax.persistence.PersistenceContext;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.time.Month;
+import java.util.*;
 
 @Repository
 public class TagsDaoImpl implements TagsDao {
@@ -47,10 +46,12 @@ public class TagsDaoImpl implements TagsDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);
         Date parsedDate = sdf.parse(date);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-       String changedDate= changedFormat.format(parsedDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month=Cal.get(Calendar.MONTH);
+        Integer year=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT  count(distinct sm_card.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc,sm_cust.[CUST_TYPE] customerType FROM [dbo].[MD_SM_CARD] sm_card inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where  sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' and sm_card.SM_DT_ISSUE LIKE '%"+ changedDate +"%' group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC],sm_cust.[CUST_TYPE]");
+        Query query = session.createSQLQuery("SELECT  count(distinct sm_card.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc,sm_cust.[CUST_TYPE] customerType FROM [dbo].[MD_SM_CARD] sm_card inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where  sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' and MONTH(sm_card.SM_DT_ISSUE)='"+month+"' and  YEAR(sm_card.SM_DT_ISSUE)='"+year+"' group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC],sm_cust.[CUST_TYPE]");
         return query.setResultTransformer(Transformers.aliasToBean(TagResponse.class))
                 .list();
 
@@ -67,10 +68,12 @@ public class TagsDaoImpl implements TagsDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);
         Date parsedDate = sdf.parse(date);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedDate= changedFormat.format(parsedDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month=Cal.get(Calendar.MONTH);
+        Integer year=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT  count(distinct sm_card.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc FROM [dbo].[MD_SM_CARD] sm_card inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where sm_cust.CUST_TYPE=:CUST_TYPE and sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' and sm_card.SM_DT_ISSUE LIKE '%"+ changedDate +"%' group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC],sm_cust.[CUST_TYPE] ");
+        Query query = session.createSQLQuery("SELECT  count(distinct sm_card.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc FROM [dbo].[MD_SM_CARD] sm_card inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where sm_cust.CUST_TYPE=:CUST_TYPE and sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' and MONTH(sm_card.SM_DT_ISSUE)='"+month+"' and YEAR(sm_card.SM_DT_ISSUE)='"+year+"' group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC],sm_cust.[CUST_TYPE] ");
         query.setParameter("CUST_TYPE",customerType);
         return query.setResultTransformer(Transformers.aliasToBean(TagResponse.class))
                 .list();
@@ -84,12 +87,18 @@ public class TagsDaoImpl implements TagsDao {
         Date parsedFirstDate = sdf.parse(firstdate);
         Date parsedSecondDate = sdf.parse(seconddate);
         Date parsedThirdDate = sdf.parse(thirddate);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedFirstDate= changedFormat.format(parsedFirstDate);
-        String changedSecondDate= changedFormat.format(parsedSecondDate);
-        String changedThirdDate= changedFormat.format(parsedThirdDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedFirstDate);
+        Integer month=Cal.get(Calendar.MONTH);
+        Integer year=Cal.get(Calendar.YEAR);
+        Cal.setTime(parsedSecondDate);
+        Integer monthofseconddate=Cal.get(Calendar.MONTH);
+        Integer yearofseconddate=Cal.get(Calendar.YEAR);
+        Cal.setTime(parsedThirdDate);
+        Integer monthofthirddate=Cal.get(Calendar.MONTH);
+        Integer yearofthirddate=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT count(distinct sm_card.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc,sm_cust.[CUST_TYPE] customerType FROM [dbo].[MD_SM_CARD] sm_card inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' and (sm_card.SM_DT_ISSUE LIKE '%"+changedFirstDate+"%' or sm_card.SM_DT_ISSUE LIKE '%"+changedSecondDate+"%' or sm_card.SM_DT_ISSUE LIKE '%"+changedThirdDate+"%' )group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC],sm_cust.[CUST_TYPE]");
+        Query query = session.createSQLQuery("SELECT count(distinct sm_card.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc,sm_cust.[CUST_TYPE] customerType FROM [dbo].[MD_SM_CARD] sm_card inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' and (MONTH(sm_card.SM_DT_ISSUE)='"+month+"'and YEAR(sm_card.SM_DT_ISSUE)='"+year+"' or MONTH(sm_card.SM_DT_ISSUE)='"+monthofseconddate+"'and YEAR(sm_card.SM_DT_ISSUE)='"+yearofseconddate+"' or MONTH(sm_card.SM_DT_ISSUE)='"+monthofthirddate+"'and YEAR(sm_card.SM_DT_ISSUE)='"+yearofthirddate+"' )group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC],sm_cust.[CUST_TYPE]");
         return query.setResultTransformer(Transformers.aliasToBean(TagResponse.class))
                 .list();
     }
@@ -101,12 +110,18 @@ public class TagsDaoImpl implements TagsDao {
         Date parsedFirstDate = sdf.parse(firstdate);
         Date parsedSecondDate = sdf.parse(seconddate);
         Date parsedThirdDate = sdf.parse(thirddate);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedFirstDate= changedFormat.format(parsedFirstDate);
-        String changedSecondDate= changedFormat.format(parsedSecondDate);
-        String changedThirdDate= changedFormat.format(parsedThirdDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedFirstDate);
+        Integer month=Cal.get(Calendar.MONTH);
+        Integer year=Cal.get(Calendar.YEAR);
+        Cal.setTime(parsedSecondDate);
+        Integer monthofseconddate=Cal.get(Calendar.MONTH);
+        Integer yearofseconddate=Cal.get(Calendar.YEAR);
+        Cal.setTime(parsedThirdDate);
+        Integer monthofthirddate=Cal.get(Calendar.MONTH);
+        Integer yearofthirddate=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT count(distinct sm_card.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc FROM [dbo].[MD_SM_CARD] sm_card inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where sm_cust.CUST_TYPE=:CUST_TYPE and sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' and (sm_card.SM_DT_ISSUE LIKE '%"+changedFirstDate+"%' or sm_card.SM_DT_ISSUE LIKE '%"+changedSecondDate+"%' or sm_card.SM_DT_ISSUE LIKE '%"+changedThirdDate+"%' )group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC]");
+        Query query = session.createSQLQuery("SELECT count(distinct sm_card.[TAG_ID]) count,sm_card.[SM_CARD_STATUS] status,card_status.[SM_CARD_DESC] statusDesc FROM [dbo].[MD_SM_CARD] sm_card inner join [dbo].[MD_SM_CUST] sm_cust on sm_card.SM_CUST_ID = sm_cust.SM_CUST_ID inner join [dbo].[PT_CARD_STATUS] card_status on sm_card.SM_CARD_STATUS = card_status.SM_CARD_STATUS where sm_cust.CUST_TYPE=:CUST_TYPE and sm_card.TAG_ID IS NOT NULL and sm_card.TAG_ID != '' and (MONTH(sm_card.SM_DT_ISSUE)='"+month+"'and YEAR(sm_card.SM_DT_ISSUE)='"+year+"' or MONTH(sm_card.SM_DT_ISSUE)='"+monthofseconddate+"'and YEAR(sm_card.SM_DT_ISSUE)='"+yearofseconddate+"' or MONTH(sm_card.SM_DT_ISSUE)='"+monthofthirddate+"'and YEAR(sm_card.SM_DT_ISSUE)='"+yearofthirddate+"')group by sm_card.[SM_CARD_STATUS],card_status.[SM_CARD_DESC]");
         query.setParameter("CUST_TYPE",customerType);
         return query.setResultTransformer(Transformers.aliasToBean(TagResponse.class))
                 .list();
