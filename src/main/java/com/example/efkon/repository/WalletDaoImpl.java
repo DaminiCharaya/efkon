@@ -46,6 +46,15 @@ public class WalletDaoImpl implements WalletDao {
         return(Integer) query.uniqueResult();
     }
 
+
+    public  List<WalletResponse> fetchNoOfWalletByBalanceAndGroupByCustomerType() {
+
+        Session session = entityManager.unwrap(Session.class);
+        Query query = session.createSQLQuery("SELECT count(distinct sm_wallet.[WALLET_ID]) count,sm_cust.[CUST_TYPE] customerType FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].MD_SM_CUST sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID  where INCR_BALANCE_AMT < 100 group by sm_cust.[CUST_TYPE]");
+        return query.setResultTransformer(Transformers.aliasToBean(WalletResponse.class))
+                .list();
+    }
+
     @Override
     public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(Integer customerType,String date) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
@@ -57,6 +66,19 @@ public class WalletDaoImpl implements WalletDao {
         Query query = session.createSQLQuery("SELECT  count(distinct sm_wallet.[WALLET_ID]) FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].MD_SM_CUST sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID  where SM_TOT_AMT < 100 and sm_cust.CUST_TYPE=:CUST_TYPE and CONVERT(VARCHAR(25), sm_wallet.TIME_STAMP, 126)  like '%"+changedDate+"%'");
         query.setParameter("CUST_TYPE",customerType);
         return(Integer) query.uniqueResult();
+    }
+
+    @Override
+    public   List<WalletResponse> fetchNoOfWalletByBalanceAndGroupByCustomerTypeAndByDate(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
+                Locale.ENGLISH);
+        Date parsedDate = sdf.parse(date);
+        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
+        String changedDate= changedFormat.format(parsedDate);
+        Session session = entityManager.unwrap(Session.class);
+        Query query = session.createSQLQuery("SELECT  count(distinct sm_wallet.[WALLET_ID]) count,sm_cust.[CUST_TYPE] customerType  FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].MD_SM_CUST sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID  where SM_TOT_AMT < 100 and CONVERT(VARCHAR(25), sm_wallet.TIME_STAMP, 126)  like '%"+changedDate+"%' group by sm_cust.[CUST_TYPE]");
+        return query.setResultTransformer(Transformers.aliasToBean(WalletResponse.class))
+                .list();
     }
 
     @Override
