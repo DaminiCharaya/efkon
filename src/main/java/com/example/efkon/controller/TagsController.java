@@ -43,10 +43,19 @@ public class TagsController {
         return new ResponseEntity<List<?>>(list,HttpStatus.OK);
     }
 
-    @GetMapping("tagsissued")
-    public ResponseEntity<?> noOfTagsIssuedInGivenDates()
+    @GetMapping("tagsissued/")
+    public ResponseEntity<List<TagResponse>> noOfTagsIssuedInGivenDates(@RequestParam("firstdate") String firstdate,@RequestParam("seconddate") String seconddate,@RequestParam("thirddate") String thirddate) throws ParseException
     {
-        List<?> list=tagsService.noOfTagsIssuedInGivenDates();
-        return new ResponseEntity<List<?>>(list,HttpStatus.OK);
+        List<TagResponse> list=tagsService.noOfTagsIssuedInGivenDates(firstdate,seconddate,thirddate);
+        return new ResponseEntity<List<TagResponse>>(list,HttpStatus.OK);
     }
+
+    @GetMapping("tagsissued/{customerType}")
+    public ResponseEntity<List<TagResponse>> noOfTagsIssuedInGivenDatesByCustomerType(@RequestParam("firstdate") String firstdate,@RequestParam("seconddate") String seconddate,@RequestParam("thirddate") String thirddate,@PathVariable("customerType") Integer customerType) throws ParseException
+    {
+        List<TagResponse> list=tagsService.noOfTagsIssuedInGivenDatesByCustomerType(firstdate,seconddate,thirddate,customerType);
+        return new ResponseEntity<List<TagResponse>>(list,HttpStatus.OK);
+    }
+
+
 }

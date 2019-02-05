@@ -13,5 +13,7 @@ public interface TagsDao {
 
     public List<?> fetchTagCountByDateAndByCustomerType(Integer customerType,String date) throws ParseException;
     public List<TagResponse> fetchTagCountByCustomerTypeAndGroupByStatus(Integer customerType);
-    public List<?> noOfTagsIssuedInGivenDates();
+    public List<TagResponse> noOfTagsIssuedInGivenDates(String firstdate,String seconddate,String thirddate) throws ParseException;
+    public List<TagResponse> noOfTagsIssuedInGivenDatesByCustomerType(String firstdate,String seconddate,String thirddate,Integer customerType) throws ParseException;
+
 }

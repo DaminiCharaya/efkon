@@ -33,9 +33,12 @@ public class TagsService {
     public List<?> fetchTagCountByDateAndByCustomerType(Integer customerType,String date) throws ParseException {
         return tagsDao.fetchTagCountByDateAndByCustomerType(customerType,date);
     }
-    public List<?> noOfTagsIssuedInGivenDates()
-    {
-        return tagsDao.noOfTagsIssuedInGivenDates();
+    public List<TagResponse> noOfTagsIssuedInGivenDates(String firstdate,String seconddate,String thirddate) throws ParseException {
+        return tagsDao.noOfTagsIssuedInGivenDates(firstdate,seconddate,thirddate);
+    }
+
+    public List<TagResponse> noOfTagsIssuedInGivenDatesByCustomerType(String firstdate,String seconddate,String thirddate,Integer customerType) throws ParseException {
+        return tagsDao.noOfTagsIssuedInGivenDatesByCustomerType(firstdate,seconddate,thirddate,customerType);
     }
     }
 

@@ -45,4 +45,39 @@ public class WalletController {
         return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
     }
 
+    @GetMapping("walletbalance/")
+    public Integer fetchNoOfWalletByBalance()
+    {
+        Integer list= walletService.fetchNoOfWalletByBalance();
+        return list;
+    }
+
+    @GetMapping("walletbalance/{customerType}")
+    public Integer fetchNoOfWalletByBalanceAndByCustomerType(@PathVariable("customerType") Integer customerType)
+    {
+        Integer list= walletService.fetchNoOfWalletByBalanceAndByCustomerType(customerType);
+        return list;
+    }
+
+    @GetMapping("walletbalance/{customerType}/date")
+    public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(@PathVariable("customerType") Integer customerType,@RequestParam("date")String date) throws ParseException
+    {
+        Integer list= walletService.fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(customerType,date);
+        return list;
+    }
+    @GetMapping("wallets/{customerType}/date")
+    public Integer fetchNoOfWalletByCustomerTypeAndByDate(@PathVariable("customerType") Integer customerType,@RequestParam("date")String date) throws ParseException
+    {
+        Integer list= walletService.fetchNoOfWalletByCustomerTypeAndByDate(customerType,date);
+        return list;
+    }
+
+    @GetMapping("fetchwallet/{customerType}/date")
+    public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(@PathVariable("customerType") Integer customerType,@RequestParam("date")String date) throws ParseException
+    {
+        Integer list= walletService.fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(customerType,date);
+        return list;
+    }
+
+
 }
