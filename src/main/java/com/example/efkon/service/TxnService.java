@@ -42,8 +42,8 @@ public class TxnService {
         return txnDao.fetchAllDistinctTxnJoinIssuerDetailsAndSmCardForDifferentDatesByCustomerType(firstdate,seconddate,thirddate,customerType);
     }
 
-    public List<?> fetchAllDistinctTxnInSmCardForDifferentDates() {
-        return txnDao.fetchAllDistinctTxnInSmCardForDifferentDates();
+    public List<?> fetchAllDistinctTxnInSmCardForDifferentDates(String firstdate,String seconddate,String thirddate)throws ParseException {
+        return txnDao.fetchAllDistinctTxnInSmCardForDifferentDates(firstdate,seconddate,thirddate);
     }
     public List<?> fetchAllDistinctTxnInSmCardByCustomerType(Integer customerType) {
         return txnDao.fetchAllDistinctTxnInSmCardByCustomerType(customerType);

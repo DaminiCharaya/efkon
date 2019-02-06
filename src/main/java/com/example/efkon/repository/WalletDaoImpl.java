@@ -12,9 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Repository
 public class WalletDaoImpl implements WalletDao {
@@ -60,10 +58,12 @@ public class WalletDaoImpl implements WalletDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);
         Date parsedDate = sdf.parse(date);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedDate= changedFormat.format(parsedDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT  count(distinct sm_wallet.[WALLET_ID]) FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].MD_SM_CUST sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID  where SM_TOT_AMT < 100 and sm_cust.CUST_TYPE=:CUST_TYPE and CONVERT(VARCHAR(25), sm_wallet.TIME_STAMP, 126)  like '%"+changedDate+"%'");
+        Query query = session.createSQLQuery("SELECT  count(distinct sm_wallet.[WALLET_ID]) FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].MD_SM_CUST sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID  where SM_TOT_AMT < 100 and sm_cust.CUST_TYPE=:CUST_TYPE and MONTH( sm_wallet.TIME_STAMP)='"+month+"' and YEAR( sm_wallet.TIME_STAMP)='"+year+"'");
         query.setParameter("CUST_TYPE",customerType);
         return(Integer) query.uniqueResult();
     }
@@ -73,10 +73,12 @@ public class WalletDaoImpl implements WalletDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);
         Date parsedDate = sdf.parse(date);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedDate= changedFormat.format(parsedDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT  count(distinct sm_wallet.[WALLET_ID]) count,sm_cust.[CUST_TYPE] customerType  FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].MD_SM_CUST sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID  where SM_TOT_AMT < 100 and CONVERT(VARCHAR(25), sm_wallet.TIME_STAMP, 126)  like '%"+changedDate+"%' group by sm_cust.[CUST_TYPE]");
+        Query query = session.createSQLQuery("SELECT  count(distinct sm_wallet.[WALLET_ID]) count,sm_cust.[CUST_TYPE] customerType  FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].MD_SM_CUST sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID  where SM_TOT_AMT < 100 and  MONTH( sm_wallet.TIME_STAMP)='"+month+"' and YEAR( sm_wallet.TIME_STAMP)='"+year+"' group by sm_cust.[CUST_TYPE]");
         return query.setResultTransformer(Transformers.aliasToBean(WalletResponse.class))
                 .list();
     }
@@ -86,10 +88,12 @@ public class WalletDaoImpl implements WalletDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);
         Date parsedDate = sdf.parse(date);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String changedDate= changedFormat.format(parsedDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT count(distinct sm_wallet.[WALLET_ID]) FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].[MD_SM_CUST] sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID where sm_cust.CUST_TYPE=:CUST_TYPE  and sm_wallet.[WALLET_ID] IS NOT NULL and sm_wallet.[WALLET_ID] != '' and sm_wallet.SM_CUST_ACT_DT LIKE '%"+changedDate+"%'");
+        Query query = session.createSQLQuery("SELECT count(distinct sm_wallet.[WALLET_ID]) FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].[MD_SM_CUST] sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID where sm_cust.CUST_TYPE=:CUST_TYPE  and sm_wallet.[WALLET_ID] IS NOT NULL and sm_wallet.[WALLET_ID] != '' and MONTH(sm_wallet.SM_CUST_ACT_DT)='"+month+"' and YEAR(sm_wallet.SM_CUST_ACT_DT)='"+year+"'");
         query.setParameter("CUST_TYPE",customerType);
         return(Integer) query.uniqueResult();
     }
@@ -98,10 +102,13 @@ public class WalletDaoImpl implements WalletDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);
         Date parsedDate = sdf.parse(date);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String changedDate= changedFormat.format(parsedDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
+        Integer day=Cal.get(Calendar.DAY_OF_MONTH);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT  count(distinct sm_wallet.[WALLET_ID]) FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].MD_SM_CUST sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID  where SM_TOT_AMT < 100 and sm_cust.CUST_TYPE=:CUST_TYPE and CONVERT(VARCHAR(25), sm_wallet.TIME_STAMP, 126)  like '%"+changedDate+"%'");
+        Query query = session.createSQLQuery("SELECT  count(distinct sm_wallet.[WALLET_ID]) FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].MD_SM_CUST sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID  where SM_TOT_AMT < 100 and sm_cust.CUST_TYPE=:CUST_TYPE and MONTH(sm_wallet.TIME_STAMP)='"+month+"' and YEAR(sm_wallet.TIME_STAMP)='"+year+"' and DAY(sm_wallet.TIME_STAMP)='"+day+"'");
         query.setParameter("CUST_TYPE",customerType);
         return(Integer) query.uniqueResult();
     }
@@ -111,10 +118,12 @@ public class WalletDaoImpl implements WalletDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);
         Date parsedDate = sdf.parse(date);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedDate= changedFormat.format(parsedDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT count(distinct sm_wallet.[WALLET_ID]) count,sm_cust.[CUST_TYPE] customerType FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].[MD_SM_CUST] sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID where sm_wallet.[WALLET_ID] IS NOT NULL and sm_wallet.[WALLET_ID] != '' and sm_wallet.SM_CUST_ACT_DT LIKE '%"+ changedDate +"%' group by sm_cust.[CUST_TYPE]");
+        Query query = session.createSQLQuery("SELECT count(distinct sm_wallet.[WALLET_ID]) count,sm_cust.[CUST_TYPE] customerType FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].[MD_SM_CUST] sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID where sm_wallet.[WALLET_ID] IS NOT NULL and sm_wallet.[WALLET_ID] != '' and MONTH(sm_wallet.SM_CUST_ACT_DT)='"+month+"' and YEAR(sm_wallet.SM_CUST_ACT_DT)='"+year+"' group by sm_cust.[CUST_TYPE]");
         return query.setResultTransformer(Transformers.aliasToBean(WalletResponse.class))
                 .list();
     }
@@ -124,10 +133,12 @@ public class WalletDaoImpl implements WalletDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);
         Date parsedDate = sdf.parse(date);
-        SimpleDateFormat changedFormat = new SimpleDateFormat("yyyy-MM");
-        String changedDate= changedFormat.format(parsedDate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT count(distinct sm_wallet.[WALLET_ID]) count FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].[MD_SM_CUST] sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID where sm_cust.CUST_TYPE=:CUST_TYPE and sm_wallet.[WALLET_ID] IS NOT NULL and sm_wallet.[WALLET_ID] != '' and sm_wallet.SM_CUST_ACT_DT LIKE '%"+ changedDate +"%'");
+        Query query = session.createSQLQuery("SELECT count(distinct sm_wallet.[WALLET_ID]) count FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].[MD_SM_CUST] sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID where sm_cust.CUST_TYPE=:CUST_TYPE and sm_wallet.[WALLET_ID] IS NOT NULL and sm_wallet.[WALLET_ID] != '' and MONTH(sm_wallet.SM_CUST_ACT_DT)='"+month+"' and YEAR(sm_wallet.SM_CUST_ACT_DT)='"+year+"' ");
         query.setParameter("CUST_TYPE",customerType);
         return query.setResultTransformer(Transformers.aliasToBean(WalletResponse.class))
                 .list();

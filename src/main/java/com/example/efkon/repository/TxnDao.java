@@ -12,7 +12,7 @@ public interface TxnDao {
     public List<TxnResponse> fetchAllTxnForDistinctTagsAndByCreatedDateAndByCustomerType(Integer customerType,String date)throws ParseException;
     public List<TxnResponse> fetchAllTxnForDistinctTagsAndByCreatedDateAndGroupByCustomerType(String date)throws ParseException;
     public List<?> fetchAllDistinctTxnInSmCard();
-    public List<?> fetchAllDistinctTxnInSmCardForDifferentDates();
+    public List<?> fetchAllDistinctTxnInSmCardForDifferentDates(String firstdate,String seconddate,String thirddate)throws ParseException;
     public List<?> fetchAllDistinctTxnJoinIssuerDetailsAndSmCardForDifferentDates(String firstdate,String seconddate,String thirddate) throws ParseException;
     public List<?> fetchAllDistinctTxnInSmCardByCustomerType(Integer customerType);
     public List<?> fetchAllDistinctTxnInSmCardGroupByCustomerType();

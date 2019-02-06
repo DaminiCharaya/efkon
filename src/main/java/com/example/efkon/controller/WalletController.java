@@ -95,7 +95,7 @@ public class WalletController {
     }
 
     @GetMapping("walletbalances/date")
-    public  ResponseEntity<List<WalletResponse>>  fetchNoOfWalletByBalanceAndGroupByCustomerTypeAndByDate(@RequestParam("date")String date) throws ParseException
+    public  ResponseEntity<List<WalletResponse>> fetchNoOfWalletByBalanceAndGroupByCustomerTypeAndByDate(@RequestParam("date")String date) throws ParseException
     {
 
         List<WalletResponse> list= walletService.fetchNoOfWalletByBalanceAndGroupByCustomerTypeAndByDate(date);

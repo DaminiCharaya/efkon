@@ -91,9 +91,9 @@ public class TxnController {
         return new ResponseEntity<List<?>>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/txnsincardfordifferentdates")
-    public ResponseEntity<List<?>> fetchAllDistinctTxnInSmCardForDifferentDates() {
-        List<?> list = txnService. fetchAllDistinctTxnInSmCardForDifferentDates();
+    @GetMapping("/txnsincardfordifferentdates/")
+    public ResponseEntity<List<?>> fetchAllDistinctTxnInSmCardForDifferentDates(@RequestParam("firstdate") String firstdate,@RequestParam("seconddate") String seconddate,@RequestParam("thirddate") String thirddate) throws ParseException {
+        List<?> list = txnService. fetchAllDistinctTxnInSmCardForDifferentDates(firstdate,seconddate,thirddate);
         if (list== null || list.isEmpty()) {
             return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
 

@@ -115,9 +115,24 @@ public class TxnDaoImpl implements TxnDao {
 
 
     @Override
-    public List<?> fetchAllDistinctTxnInSmCardForDifferentDates() {
+    public List<?> fetchAllDistinctTxnInSmCardForDifferentDates(String firstdate,String seconddate,String thirddate) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
+                Locale.ENGLISH);
+        Date parsedFirstDate = sdf.parse(firstdate);
+        Date parsedSecondDate = sdf.parse(seconddate);
+        Date parsedThirdDate = sdf.parse(thirddate);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedFirstDate);
+        Integer month=Cal.get(Calendar.MONTH)+1;
+        Integer year=Cal.get(Calendar.YEAR);
+        Cal.setTime(parsedSecondDate);
+        Integer monthofseconddate=Cal.get(Calendar.MONTH)+1;
+        Integer yearofseconddate=Cal.get(Calendar.YEAR);
+        Cal.setTime(parsedThirdDate);
+        Integer monthofthirddate=Cal.get(Calendar.MONTH)+1;
+        Integer yearofthirddate=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT  count(distinct txn.[TAG_ID]) FROM [dbo].[TXN_ISSUER_DETAIL] txn where txn.TAG_ID IS NOT NULL and txn.TAG_ID != '' and (CONVERT(VARCHAR(25), txn.CREATED_AT, 126)  like '2018-10%' or CONVERT(VARCHAR(25), txn.CREATED_AT, 126)  like '2018-11%' or CONVERT(VARCHAR(25), txn.CREATED_AT, 126)  like '2018-12%')");
+        Query query = session.createSQLQuery("SELECT  count(distinct txn.[TAG_ID]) FROM [dbo].[TXN_ISSUER_DETAIL] txn where txn.TAG_ID IS NOT NULL and txn.TAG_ID != ''  and ( MONTH(txn.CREATED_AT)='"+month+"' and YEAR(txn.CREATED_AT)='"+year+"' )or MONTH(txn.CREATED_AT)='"+monthofseconddate+"' and YEAR(txn.CREATED_AT)='"+yearofseconddate+"' or  MONTH(txn.CREATED_AT)='"+monthofthirddate+"' and YEAR(txn.CREATED_AT)='"+yearofthirddate+"'");
         return query
                 .list();
     }
@@ -141,7 +156,7 @@ public class TxnDaoImpl implements TxnDao {
         Integer monthofthirddate=Cal.get(Calendar.MONTH)+1;
         Integer yearofthirddate=Cal.get(Calendar.YEAR);
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createSQLQuery("SELECT count(distinct txn.[TAG_ID]) FROM [dbo].[TXN_ISSUER_DETAIL] txn inner join [dbo].[MD_SM_CARD] sm_card on txn.TAG_ID = sm_card.TAG_ID  where txn.TAG_ID IS NOT NULL and txn.TAG_ID != '' and ( MONTH(txn.CREATED_AT)='"+month+"' and YEAR(txn.CREATED_AT)='"+year+"' )or  MONTH(txn.CREATED_AT)='"+monthofseconddate+"' and YEAR(txn.CREATED_AT)='"+yearofseconddate+"' or  MONTH(txn.CREATED_AT)='"+monthofthirddate+"' and YEAR(txn.CREATED_AT)='"+yearofthirddate+"')");
+      Query query = session.createSQLQuery("SELECT count(distinct txn.[TAG_ID]) FROM [dbo].[TXN_ISSUER_DETAIL] txn inner join [dbo].[MD_SM_CARD] sm_card on txn.TAG_ID = sm_card.TAG_ID  where txn.TAG_ID IS NOT NULL and txn.TAG_ID != '' and ( MONTH(txn.CREATED_AT)='"+month+"' and YEAR(txn.CREATED_AT)='"+year+"' )or  MONTH(txn.CREATED_AT)='"+monthofseconddate+"' and YEAR(txn.CREATED_AT)='"+yearofseconddate+"' or  MONTH(txn.CREATED_AT)='"+monthofthirddate+"' and YEAR(txn.CREATED_AT)='"+yearofthirddate+"')");
         return query
                 .list();
     }
