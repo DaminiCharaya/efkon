@@ -12,8 +12,7 @@ public class TagResponse {
     Integer customerType;
     String customerTypeStr;
 
-    public TagResponse()
-    {
+    public TagResponse() {
 
     }
 
@@ -30,7 +29,7 @@ public class TagResponse {
     }
 
     public void setCustomerType(Integer customerType) {
-        this.customerTypeStr = customerType==1?"Retailer": "Corporate";
+        this.customerTypeStr = customerType == 1 ? "Retailer" : "Corporate";
         this.customerType = customerType;
     }
 

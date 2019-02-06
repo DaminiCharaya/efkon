@@ -10,8 +10,7 @@ public class TxnResponse {
     Integer customerType;
     String customerTypeStr;
 
-    public TxnResponse()
-    {
+    public TxnResponse() {
 
     }
 

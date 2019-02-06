@@ -11,8 +11,7 @@ public class WalletResponse {
     Integer customerType;
     String customerTypeStr;
 
-    public WalletResponse()
-    {
+    public WalletResponse() {
 
     }
 
@@ -27,7 +26,7 @@ public class WalletResponse {
     }
 
     public void setCustomerType(Integer customerType) {
-        this.customerTypeStr = customerType==1?"Retailer": "Corporate";
+        this.customerTypeStr = customerType == 1 ? "Retailer" : "Corporate";
         this.customerType = customerType;
     }
 

@@ -19,20 +19,19 @@ public class WalletController {
     WalletService walletService;
 
     @GetMapping("/wallet/{customerType}")
-    public ResponseEntity<List<WalletResponse>> fetchWalletCountByCustomerType(@PathVariable("customerType") Integer customerType)
-    {
-        List<WalletResponse> list=walletService.fetchWalletCountByCustomerType(customerType);
-        if (list== null || list.isEmpty()) {
+    public ResponseEntity<List<WalletResponse>> fetchWalletCountByCustomerType(@PathVariable("customerType") Integer customerType) {
+        List<WalletResponse> list = walletService.fetchWalletCountByCustomerType(customerType);
+        if (list == null || list.isEmpty()) {
             return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
 
         }
-        return new ResponseEntity<List<WalletResponse>>(list,HttpStatus.OK);
+        return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
     }
 
     @GetMapping("/wallet")
     public ResponseEntity<List<WalletResponse>> fetchWalletCountGroupByCustomerType() {
         List<WalletResponse> list = walletService.fetchWalletCountGroupByCustomerType();
-        if (list== null || list.isEmpty()) {
+        if (list == null || list.isEmpty()) {
             return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
 
         }
@@ -40,10 +39,9 @@ public class WalletController {
     }
 
     @GetMapping("wallet/date")
-    public ResponseEntity<List<WalletResponse>> fetchWalletCountByDateAndGroupByCustomerType(@RequestParam("date")String date) throws ParseException
-    {
-        List<WalletResponse> list= walletService.fetchWalletCountByDateAndGroupByCustomerType(date);
-        if (list== null || list.isEmpty()) {
+    public ResponseEntity<List<WalletResponse>> fetchWalletCountByDateAndGroupByCustomerType(@RequestParam("date") String date) throws ParseException {
+        List<WalletResponse> list = walletService.fetchWalletCountByDateAndGroupByCustomerType(date);
+        if (list == null || list.isEmpty()) {
             return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
 
         }
@@ -52,10 +50,9 @@ public class WalletController {
 
 
     @GetMapping("wallet/{customerType}/date")
-    public ResponseEntity<List<WalletResponse>> fetchWalletCountByDateAndByCustomerType(@PathVariable("customerType") Integer customerType,@RequestParam("date")String date) throws ParseException
-    {
-        List<WalletResponse> list= walletService.fetchWalletCountByDateAndByCustomerType(customerType,date);
-        if (list== null || list.isEmpty()) {
+    public ResponseEntity<List<WalletResponse>> fetchWalletCountByDateAndByCustomerType(@PathVariable("customerType") Integer customerType, @RequestParam("date") String date) throws ParseException {
+        List<WalletResponse> list = walletService.fetchWalletCountByDateAndByCustomerType(customerType, date);
+        if (list == null || list.isEmpty()) {
             return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
 
         }
@@ -63,59 +60,53 @@ public class WalletController {
     }
 
     @GetMapping("walletbalance/")
-    public Integer fetchNoOfWalletByBalance()
-    {
-        Integer list= walletService.fetchNoOfWalletByBalance();
+    public Integer fetchNoOfWalletByBalance() {
+        Integer list = walletService.fetchNoOfWalletByBalance();
         return list;
     }
 
     @GetMapping("walletbalance/{customerType}")
-    public Integer fetchNoOfWalletByBalanceAndByCustomerType(@PathVariable("customerType") Integer customerType)
-    {
-        Integer list= walletService.fetchNoOfWalletByBalanceAndByCustomerType(customerType);
+    public Integer fetchNoOfWalletByBalanceAndByCustomerType(@PathVariable("customerType") Integer customerType) {
+        Integer list = walletService.fetchNoOfWalletByBalanceAndByCustomerType(customerType);
         return list;
     }
 
     @GetMapping("walletbalances/")
-    public ResponseEntity<List<WalletResponse>> fetchNoOfWalletByBalanceAndGroupByCustomerType()
-    {
-        List<WalletResponse> list= walletService.fetchNoOfWalletByBalanceAndGroupByCustomerType();
-        if (list== null || list.isEmpty()) {
-            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
-
-        }
-        return  new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
-    }
-
-    @GetMapping("walletbalance/{customerType}/date")
-    public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(@PathVariable("customerType") Integer customerType,@RequestParam("date")String date) throws ParseException
-    {
-        Integer list= walletService.fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(customerType,date);
-        return list;
-    }
-
-    @GetMapping("walletbalances/date")
-    public  ResponseEntity<List<WalletResponse>> fetchNoOfWalletByBalanceAndGroupByCustomerTypeAndByDate(@RequestParam("date")String date) throws ParseException
-    {
-
-        List<WalletResponse> list= walletService.fetchNoOfWalletByBalanceAndGroupByCustomerTypeAndByDate(date);
-        if (list== null || list.isEmpty()) {
+    public ResponseEntity<List<WalletResponse>> fetchNoOfWalletByBalanceAndGroupByCustomerType() {
+        List<WalletResponse> list = walletService.fetchNoOfWalletByBalanceAndGroupByCustomerType();
+        if (list == null || list.isEmpty()) {
             return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
 
         }
         return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
     }
+
+    @GetMapping("walletbalance/{customerType}/date")
+    public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(@PathVariable("customerType") Integer customerType, @RequestParam("date") String date) throws ParseException {
+        Integer list = walletService.fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(customerType, date);
+        return list;
+    }
+
+    @GetMapping("walletbalances/date")
+    public ResponseEntity<List<WalletResponse>> fetchNoOfWalletByBalanceAndGroupByCustomerTypeAndByDate(@RequestParam("date") String date) throws ParseException {
+
+        List<WalletResponse> list = walletService.fetchNoOfWalletByBalanceAndGroupByCustomerTypeAndByDate(date);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
+    }
+
     @GetMapping("wallets/{customerType}/date")
-    public Integer fetchNoOfWalletByCustomerTypeAndByDate(@PathVariable("customerType") Integer customerType,@RequestParam("date")String date) throws ParseException
-    {
-        Integer list= walletService.fetchNoOfWalletByCustomerTypeAndByDate(customerType,date);
+    public Integer fetchNoOfWalletByCustomerTypeAndByDate(@PathVariable("customerType") Integer customerType, @RequestParam("date") String date) throws ParseException {
+        Integer list = walletService.fetchNoOfWalletByCustomerTypeAndByDate(customerType, date);
         return list;
     }
 
     @GetMapping("fetchwallet/{customerType}/date")
-    public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(@PathVariable("customerType") Integer customerType,@RequestParam("date")String date) throws ParseException
-    {
-        Integer list= walletService.fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(customerType,date);
+    public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(@PathVariable("customerType") Integer customerType, @RequestParam("date") String date) throws ParseException {
+        Integer list = walletService.fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(customerType, date);
         return list;
     }
 

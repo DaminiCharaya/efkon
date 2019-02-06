@@ -34,17 +34,18 @@ public class TxnService {
         return txnDao.fetchAllDistinctTxnInSmCard();
     }
 
-    public List<?> fetchAllDistinctTxnJoinIssuerDetailsAndSmCardForDifferentDates(String firstdate,String seconddate,String thirddate) throws ParseException {
-        return txnDao.fetchAllDistinctTxnJoinIssuerDetailsAndSmCardForDifferentDates(firstdate,seconddate,thirddate);
+    public List<?> fetchAllDistinctTxnJoinIssuerDetailsAndSmCardForDifferentDates(String firstdate, String seconddate, String thirddate) throws ParseException {
+        return txnDao.fetchAllDistinctTxnJoinIssuerDetailsAndSmCardForDifferentDates(firstdate, seconddate, thirddate);
     }
 
-    public List<?> fetchAllDistinctTxnJoinIssuerDetailsAndSmCardForDifferentDatesByCustomerType(String firstdate,String seconddate,String thirddate,Integer customerType) throws ParseException {
-        return txnDao.fetchAllDistinctTxnJoinIssuerDetailsAndSmCardForDifferentDatesByCustomerType(firstdate,seconddate,thirddate,customerType);
+    public List<?> fetchAllDistinctTxnJoinIssuerDetailsAndSmCardForDifferentDatesByCustomerType(String firstdate, String seconddate, String thirddate, Integer customerType) throws ParseException {
+        return txnDao.fetchAllDistinctTxnJoinIssuerDetailsAndSmCardForDifferentDatesByCustomerType(firstdate, seconddate, thirddate, customerType);
     }
 
-    public List<?> fetchAllDistinctTxnInSmCardForDifferentDates(String firstdate,String seconddate,String thirddate)throws ParseException {
-        return txnDao.fetchAllDistinctTxnInSmCardForDifferentDates(firstdate,seconddate,thirddate);
+    public List<?> fetchAllDistinctTxnInSmCardForDifferentDates(String firstdate, String seconddate, String thirddate) throws ParseException {
+        return txnDao.fetchAllDistinctTxnInSmCardForDifferentDates(firstdate, seconddate, thirddate);
     }
+
     public List<?> fetchAllDistinctTxnInSmCardByCustomerType(Integer customerType) {
         return txnDao.fetchAllDistinctTxnInSmCardByCustomerType(customerType);
     }
@@ -52,12 +53,21 @@ public class TxnService {
     public List<?> fetchAllDistinctTxnInSmCardGroupByCustomerType() {
         return txnDao.fetchAllDistinctTxnInSmCardGroupByCustomerType();
     }
-    public List<TxnResponse> fetchAllTxnForDistinctTagsAndByCreatedDateAndByCustomerType(Integer customerType,String date)throws ParseException {
-        return txnDao.fetchAllTxnForDistinctTagsAndByCreatedDateAndByCustomerType(customerType,date);
+
+    public List<TxnResponse> fetchAllTxnForDistinctTagsAndByCreatedDateAndByCustomerType(Integer customerType, String date) throws ParseException {
+        return txnDao.fetchAllTxnForDistinctTagsAndByCreatedDateAndByCustomerType(customerType, date);
     }
 
-    public List<TxnResponse> fetchAllTxnForDistinctTagsAndByCreatedDateAndGroupByCustomerType(String date)throws ParseException {
+    public List<TxnResponse> fetchAllTxnForDistinctTagsAndByCreatedDateAndGroupByCustomerType(String date) throws ParseException {
         return txnDao.fetchAllTxnForDistinctTagsAndByCreatedDateAndGroupByCustomerType(date);
+    }
+
+    public List<?> fetchTagCount() {
+        return txnDao.fetchTagCount();
+    }
+
+    public List<?> fetchTagCountWithRevenue() {
+        return txnDao.fetchTagCountWithRevenue();
     }
 
 }

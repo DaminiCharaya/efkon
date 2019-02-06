@@ -23,12 +23,13 @@ public class WalletService {
     public List<WalletResponse> fetchWalletCountByCustomerType(Integer customerType) {
         return walletDao.fetchWalletCountByCustomerType(customerType);
     }
+
     public List<WalletResponse> fetchWalletCountByDateAndGroupByCustomerType(String date) throws ParseException {
         return walletDao.fetchWalletCountByDateAndGroupByCustomerType(date);
     }
 
-    public List<WalletResponse> fetchWalletCountByDateAndByCustomerType(Integer customerType,String date) throws ParseException {
-        return walletDao.fetchWalletCountByDateAndByCustomerType(customerType,date);
+    public List<WalletResponse> fetchWalletCountByDateAndByCustomerType(Integer customerType, String date) throws ParseException {
+        return walletDao.fetchWalletCountByDateAndByCustomerType(customerType, date);
     }
 
 
@@ -46,19 +47,20 @@ public class WalletService {
         return walletDao.fetchNoOfWalletByBalanceAndGroupByCustomerType();
     }
 
-    public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(Integer customerType,String date) throws ParseException {
-        return walletDao.fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(customerType,date);
+    public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(Integer customerType, String date) throws ParseException {
+        return walletDao.fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(customerType, date);
     }
 
     public List<WalletResponse> fetchNoOfWalletByBalanceAndGroupByCustomerTypeAndByDate(String date) throws ParseException {
         return walletDao.fetchNoOfWalletByBalanceAndGroupByCustomerTypeAndByDate(date);
     }
-    public Integer fetchNoOfWalletByCustomerTypeAndByDate(Integer customerType,String date) throws ParseException {
-        return walletDao.fetchNoOfWalletByCustomerTypeAndByDate(customerType,date);
+
+    public Integer fetchNoOfWalletByCustomerTypeAndByDate(Integer customerType, String date) throws ParseException {
+        return walletDao.fetchNoOfWalletByCustomerTypeAndByDate(customerType, date);
     }
 
 
-    public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(Integer customerType,String date) throws ParseException {
-        return walletDao.fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(customerType,date);
+    public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(Integer customerType, String date) throws ParseException {
+        return walletDao.fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(customerType, date);
     }
 }
