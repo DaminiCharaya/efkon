@@ -65,6 +65,12 @@ public class TxnController {
         return list;
     }
 
+    @GetMapping("/txnsfortags/bymonth")
+    public List<TxnResponse> fetchAllTxnForDistinctTagsAndByMonth() {
+        List<TxnResponse> list = txnService.fetchAllTxnForDistinctTagsAndByMonth();
+        return list;
+    }
+
 
     @GetMapping("/txnsincard")
     public ResponseEntity<List<?>> fetchAllDistinctTxnInSmCard() {

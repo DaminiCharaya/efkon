@@ -28,9 +28,29 @@ public class WalletController {
         return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
     }
 
+    @GetMapping("/wallet/{customerType}/sortbymonthonly")
+    public ResponseEntity<List<WalletResponse>> fetchWalletCountByCustomerTypeAndSortByMonth(@PathVariable("customerType") Integer customerType) {
+        List<WalletResponse> list = walletService.fetchWalletCountByCustomerTypeAndSortByMonth(customerType);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
+    }
+
     @GetMapping("/wallet")
     public ResponseEntity<List<WalletResponse>> fetchWalletCountGroupByCustomerType() {
         List<WalletResponse> list = walletService.fetchWalletCountGroupByCustomerType();
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<WalletResponse>>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/wallet/bymonth")
+    public ResponseEntity<List<WalletResponse>> fetchWalletCountGroupByCustomerTypeAndSortByMonth() {
+        List<WalletResponse> list = walletService.fetchWalletCountGroupByCustomerTypeAndSortByMonth();
         if (list == null || list.isEmpty()) {
             return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
 
@@ -104,7 +124,7 @@ public class WalletController {
         return list;
     }
 
-    @GetMapping("fetchwallet/{customerType}/date")
+    @GetMapping("fetchwallet/{customerType}/Samedate")
     public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(@PathVariable("customerType") Integer customerType, @RequestParam("date") String date) throws ParseException {
         Integer list = walletService.fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(customerType, date);
         return list;

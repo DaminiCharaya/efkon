@@ -20,8 +20,15 @@ public class WalletService {
         return walletDao.fetchWalletCountGroupByCustomerType();
     }
 
+    public List<WalletResponse> fetchWalletCountGroupByCustomerTypeAndSortByMonth() {
+        return walletDao.fetchWalletCountGroupByCustomerTypeAndSortByMonth();
+    }
     public List<WalletResponse> fetchWalletCountByCustomerType(Integer customerType) {
         return walletDao.fetchWalletCountByCustomerType(customerType);
+    }
+
+    public List<WalletResponse> fetchWalletCountByCustomerTypeAndSortByMonth(Integer customerType) {
+        return walletDao.fetchWalletCountByCustomerTypeAndSortByMonth(customerType);
     }
 
     public List<WalletResponse> fetchWalletCountByDateAndGroupByCustomerType(String date) throws ParseException {

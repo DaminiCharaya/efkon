@@ -55,6 +55,14 @@ public class TxnDaoImpl implements TxnDao {
     }
 
     @Override
+    public List<TxnResponse> fetchAllTxnForDistinctTagsAndByMonth() {
+        Session session = entityManager.unwrap(Session.class);
+        Query query = session.createSQLQuery("SELECT count (distinct txn.[TAG_ID]) count,MONTH(txn.[CREATED_AT]) month FROM [dbo].[TXN_ISSUER_DETAIL] txn where txn.TAG_ID IS NOT NULL and txn.TAG_ID != '' group by MONTH(txn.[CREATED_AT]) order by MONTH(txn.[CREATED_AT])");
+        return query.setResultTransformer(Transformers.aliasToBean(TxnResponse.class))
+                .list();
+    }
+
+    @Override
     public List<TxnResponse> fetchAllTxnForDistinctTagsAndByCreatedDateAndByCustomerType(Integer customerType, String date) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                 Locale.ENGLISH);

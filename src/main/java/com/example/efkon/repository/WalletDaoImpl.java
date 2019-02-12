@@ -29,6 +29,14 @@ public class WalletDaoImpl implements WalletDao {
     }
 
     @Override
+    public List<WalletResponse> fetchWalletCountGroupByCustomerTypeAndSortByMonth() {
+        Session session = entityManager.unwrap(Session.class);
+        Query query = session.createSQLQuery("SELECT count(distinct sm_wallet.[WALLET_ID]) count,sm_cust.[CUST_TYPE] customerType,MONTH(sm_wallet.[SM_CUST_ACT_DT]) month FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].[MD_SM_CUST] sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID where sm_wallet.[WALLET_ID] IS NOT NULL and sm_wallet.[WALLET_ID] != '' group by sm_cust.[CUST_TYPE],MONTH(sm_wallet.[SM_CUST_ACT_DT]) order by MONTH(sm_wallet.[SM_CUST_ACT_DT])");
+        return query.setResultTransformer(Transformers.aliasToBean(WalletResponse.class))
+                .list();
+    }
+
+    @Override
     public Integer fetchNoOfWalletByBalance() {
 
         Session session = entityManager.unwrap(Session.class);
@@ -154,4 +162,15 @@ public class WalletDaoImpl implements WalletDao {
         return query.setResultTransformer(Transformers.aliasToBean(WalletResponse.class))
                 .list();
     }
+
+
+    public List<WalletResponse> fetchWalletCountByCustomerTypeAndSortByMonth(Integer customerType) {
+        Session session = entityManager.unwrap(Session.class);
+        Query query = session.createSQLQuery("SELECT count(distinct sm_wallet.[WALLET_ID]) count,MONTH(sm_wallet.[SM_CUST_ACT_DT]) month FROM [dbo].[MD_SM_CUST_GROUP_ACCOUNT] sm_wallet inner join [dbo].[MD_SM_CUST] sm_cust on sm_wallet.SM_CUST_ID = sm_cust.SM_CUST_ID where  sm_cust.CUST_TYPE=:CUST_TYPE and sm_wallet.[WALLET_ID] IS NOT NULL and sm_wallet.[WALLET_ID] != '' group by MONTH(sm_wallet.[SM_CUST_ACT_DT]) order by MONTH(sm_wallet.[SM_CUST_ACT_DT])");
+        query.setParameter("CUST_TYPE", customerType);
+        return query.setResultTransformer(Transformers.aliasToBean(WalletResponse.class))
+                .list();
+    }
 }
+
+

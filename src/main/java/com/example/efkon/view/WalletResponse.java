@@ -10,15 +10,17 @@ public class WalletResponse {
     Integer count;
     Integer customerType;
     String customerTypeStr;
+    Integer month;
 
     public WalletResponse() {
 
     }
 
-    public WalletResponse(Integer counts, Integer customerType, String customerTypeStr) {
+    public WalletResponse(Integer counts, Integer customerType, String customerTypeStr,Integer month) {
         this.count = count;
         this.customerType = customerType;
         this.customerTypeStr = customerTypeStr;
+        this.month=month;
     }
 
     public Integer getCustomerType() {
@@ -28,6 +30,14 @@ public class WalletResponse {
     public void setCustomerType(Integer customerType) {
         this.customerTypeStr = customerType == 1 ? "Retailer" : "Corporate";
         this.customerType = customerType;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
     }
 
     public String getCustomerTypeStr() {

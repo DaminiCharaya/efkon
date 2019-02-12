@@ -9,21 +9,31 @@ public class TxnResponse {
     Integer count;
     Integer customerType;
     String customerTypeStr;
+    Integer month;
 
     public TxnResponse() {
 
     }
 
-    public TxnResponse(Integer status, String statusDesc, Integer count, Integer customerType, String customerTypeStr) {
+    public TxnResponse(Integer status, String statusDesc, Integer count, Integer customerType, String customerTypeStr,Integer month) {
         this.status = status;
         this.statusDesc = statusDesc;
         this.count = count;
         this.customerType = customerType;
         this.customerTypeStr = customerTypeStr;
+        this.month=month;
     }
 
     public Integer getStatus() {
         return status;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
     }
 
     public void setStatus(Integer status) {

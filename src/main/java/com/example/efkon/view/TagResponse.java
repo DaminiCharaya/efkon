@@ -3,6 +3,7 @@ package com.example.efkon.view;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.Entity;
+import java.util.Date;
 
 @JsonInclude(value = JsonInclude.Include.NON_ABSENT)
 public class TagResponse {
@@ -11,17 +12,19 @@ public class TagResponse {
     Integer count;
     Integer customerType;
     String customerTypeStr;
+    Integer month;
 
     public TagResponse() {
 
     }
 
-    public TagResponse(Integer status, String statusDesc, Integer count, Integer customerType, String customerTypeStr) {
+    public TagResponse(Integer status, String statusDesc, Integer count, Integer customerType, String customerTypeStr,Integer month) {
         this.status = status;
         this.statusDesc = statusDesc;
         this.count = count;
         this.customerType = customerType;
         this.customerTypeStr = customerTypeStr;
+        this.month=month;
     }
 
     public Integer getCustomerType() {
@@ -31,6 +34,14 @@ public class TagResponse {
     public void setCustomerType(Integer customerType) {
         this.customerTypeStr = customerType == 1 ? "Retailer" : "Corporate";
         this.customerType = customerType;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
     }
 
     public String getCustomerTypeStr() {

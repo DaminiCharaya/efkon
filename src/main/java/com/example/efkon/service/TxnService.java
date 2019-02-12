@@ -30,6 +30,10 @@ public class TxnService {
         return txnDao.fetchAllTxnForDistinctTags();
     }
 
+    public List<TxnResponse> fetchAllTxnForDistinctTagsAndByMonth() {
+        return txnDao.fetchAllTxnForDistinctTagsAndByMonth();
+    }
+
     public List<?> fetchAllDistinctTxnInSmCard() {
         return txnDao.fetchAllDistinctTxnInSmCard();
     }

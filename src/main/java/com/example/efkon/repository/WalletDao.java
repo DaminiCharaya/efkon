@@ -11,6 +11,8 @@ public interface WalletDao {
 
     public List<WalletResponse> fetchWalletCountGroupByCustomerType();
 
+    public List<WalletResponse> fetchWalletCountGroupByCustomerTypeAndSortByMonth();
+
     public Integer fetchNoOfWalletByBalance();
 
     public Integer fetchNoOfWalletByBalanceAndByCustomerType(Integer customerType);
@@ -26,6 +28,7 @@ public interface WalletDao {
     public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(Integer customerType, String date) throws ParseException;
 
     public List<WalletResponse> fetchWalletCountByCustomerType(Integer customerType);
+    public List<WalletResponse> fetchWalletCountByCustomerTypeAndSortByMonth(Integer customerType);
 
     public List<WalletResponse> fetchWalletCountByDateAndGroupByCustomerType(String date) throws ParseException;
 

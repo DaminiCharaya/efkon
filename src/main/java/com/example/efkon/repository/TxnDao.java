@@ -11,6 +11,7 @@ public interface TxnDao {
     public Integer fetchAllTxnForDistinctTagsAndByCreatedDate(String date) throws ParseException;
 
     public Integer fetchAllTxnForDistinctTags();
+    public List<TxnResponse> fetchAllTxnForDistinctTagsAndByMonth();
 
     public List<TxnResponse> fetchAllTxnForDistinctTagsAndByCreatedDateAndByCustomerType(Integer customerType, String date) throws ParseException;
 

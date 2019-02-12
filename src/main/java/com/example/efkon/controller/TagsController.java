@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.HTML;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,30 @@ public class TagsController {
         return new ResponseEntity<List<TagResponse>>(list, HttpStatus.OK);
     }
 
+
+    @GetMapping("/tags/{customerType}/sortbymonth")
+    public ResponseEntity<List<TagResponse>> fetchTagCountByCustomerTypeAndGroupByStatusAndSortByMonth(@PathVariable("customerType") Integer customerType) {
+
+        List<TagResponse> list = tagsService.fetchTagCountByCustomerTypeAndGroupByStatusAndSortByMonth(customerType);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<TagResponse>>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/tags/{customerType}/sortbymonthonly")
+    public ResponseEntity<List<TagResponse>> fetchTagCountByCustomerTypeAndSortByMonth(@PathVariable("customerType") Integer customerType) {
+
+        List<TagResponse> list = tagsService.fetchTagCountByCustomerTypeAndSortByMonth(customerType);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<TagResponse>>(list, HttpStatus.OK);
+    }
+
+
     @GetMapping("/tags")
     public ResponseEntity<List<TagResponse>> fetchTagCountGroupByCustomerType() {
         List<TagResponse> list = tagsService.fetchTagCountGroupByCustomerType();
@@ -40,9 +65,49 @@ public class TagsController {
         return new ResponseEntity<List<TagResponse>>(list, HttpStatus.OK);
     }
 
+    @GetMapping("/sorttagsbymonth")
+    public ResponseEntity<List<TagResponse>> fetchTagCountGroupByCustomerTypeAndSortByMonth(){
+        List<TagResponse> list = tagsService.fetchTagCountGroupByCustomerTypeAndSortByMonth();
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<TagResponse>>(list, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/tagscountbymonth")
+    public ResponseEntity<List<TagResponse>> fetchTagCountGroupByCustomerTypeAndByMonth(@RequestParam("month") Integer month) throws ParseException{
+        List<TagResponse> list = tagsService.fetchTagCountGroupByCustomerTypeAndByMonth(month);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<TagResponse>>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/tags/{customerType}/month")
+    public ResponseEntity<List<TagResponse>> fetchTagCountByCustomerTypeAndByMonth(@PathVariable("customerType")Integer customerType,@RequestParam("month") Integer month) throws ParseException {
+        List<TagResponse> list = tagsService.fetchTagCountByCustomerTypeAndByMonth(customerType,month);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<TagResponse>>(list, HttpStatus.OK);
+    }
+
     @GetMapping("/tags/date")
     public ResponseEntity<?> fetchTagCountByDateGroupByCustomerType(@RequestParam("date") String date) throws ParseException {
         List<?> list = tagsService.fetchTagCountByDateGroupByCustomerType(date);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<?>>(list, HttpStatus.OK);
+    }
+    @GetMapping("/tags/samedate")
+    public ResponseEntity<?> fetchTagCountBySameDateGroupByCustomerType(@RequestParam("date") String date) throws ParseException {
+        List<?> list = tagsService.fetchTagCountBySameDateGroupByCustomerType(date);
         if (list == null || list.isEmpty()) {
             return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
 
@@ -80,6 +145,55 @@ public class TagsController {
         }
         return new ResponseEntity<List<TagResponse>>(list, HttpStatus.OK);
     }
+@GetMapping("nooftagsofretailerbystatus/{status}")
+    public ResponseEntity<List<?>> noOfTagsOfRetailerByStatus(@PathVariable("status") Integer status)
+{
+    List<?> list = tagsService.noOfTagsOfRetailerByStatus(status);
+    if (list == null || list.isEmpty()) {
+        return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
 
+    }
+    return new ResponseEntity<List<?>>(list, HttpStatus.OK);
+
+}
+
+
+    @GetMapping("active30forretail/{noOfTags}")
+    public ResponseEntity<List<?>> active30forretail(@PathVariable("noOfTags") Integer noOfTags,@RequestParam("date") String date) throws ParseException
+    {
+        List<?> list = tagsService.active30forretail(noOfTags,date);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<?>>(list, HttpStatus.OK);
+
+    }
+
+
+    @GetMapping("active30forcorporate/{noOfTags}")
+    public ResponseEntity<List<?>> active30forcorporate(@PathVariable("noOfTags") Integer noOfTags,@RequestParam("date") String date) throws ParseException
+    {
+        List<?> list = tagsService.active30forcorporate(noOfTags,date);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<?>>(list, HttpStatus.OK);
+
+    }
+
+
+    @GetMapping("nooftagsofcorporatebystatus/{status}")
+    public ResponseEntity<List<?>> noOfTagsOfCorporateByStatus(@PathVariable("status") Integer status)
+    {
+        List<?> list = tagsService.noOfTagsOfCorporateByStatus(status);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<?>>(list, HttpStatus.OK);
+
+    }
 
 }
