@@ -129,6 +129,38 @@ public class WalletController {
         Integer list = walletService.fetchNoOfWalletByBalanceAndByCustomerTypeAndBySameDate(customerType, date);
         return list;
     }
+   @GetMapping("walletbalancelessthan100forretailer")
+    public ResponseEntity<List<?>> fetchWalletOfRetailerByBalanceAndByDateInTxn_Media_Type_Id(@RequestParam("date")String date) throws ParseException {
+    List<?> list = walletService.fetchWalletOfRetailerByBalanceAndByDateInTxn_Media_Type_Id(date);
+    if (list == null || list.isEmpty()) {
+        return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+    }
+    return new ResponseEntity<List<?>>(list, HttpStatus.OK);
+
+}
 
 
+    @GetMapping("walletbalancelessthan100forboth")
+    public ResponseEntity<List<?>> fetchWalletByBalanceAndByDateInTxn_Media_Type_Id(@RequestParam("date")String date) throws ParseException {
+        List<?> list = walletService.fetchWalletByBalanceAndByDateInTxn_Media_Type_Id(date);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<?>>(list, HttpStatus.OK);
+
+    }
+
+
+    @GetMapping("walletbalancelessthan100forcorporate")
+    public ResponseEntity<List<?>> fetchWalletOfCorporateByBalanceAndByDateInTxn_Media_Type_Id(@RequestParam("date")String date) throws ParseException {
+        List<?> list = walletService.fetchWalletOfCorporateByBalanceAndByDateInTxn_Media_Type_Id(date);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity(new NotFoundException("can't find the requested data"), HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<List<?>>(list, HttpStatus.OK);
+
+    }
 }

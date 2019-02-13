@@ -23,6 +23,7 @@ public class WalletService {
     public List<WalletResponse> fetchWalletCountGroupByCustomerTypeAndSortByMonth() {
         return walletDao.fetchWalletCountGroupByCustomerTypeAndSortByMonth();
     }
+
     public List<WalletResponse> fetchWalletCountByCustomerType(Integer customerType) {
         return walletDao.fetchWalletCountByCustomerType(customerType);
     }
@@ -54,6 +55,17 @@ public class WalletService {
         return walletDao.fetchNoOfWalletByBalanceAndGroupByCustomerType();
     }
 
+    public List<?> fetchWalletOfRetailerByBalanceAndByDateInTxn_Media_Type_Id(String date) throws ParseException {
+        return walletDao.fetchWalletOfRetailerByBalanceAndByDateInTxn_Media_Type_Id(date);
+    }
+
+    public List<?> fetchWalletOfCorporateByBalanceAndByDateInTxn_Media_Type_Id(String date) throws ParseException {
+        return walletDao.fetchWalletOfCorporateByBalanceAndByDateInTxn_Media_Type_Id(date);
+    }
+
+    public List<?> fetchWalletByBalanceAndByDateInTxn_Media_Type_Id(String date) throws ParseException {
+        return walletDao.fetchWalletByBalanceAndByDateInTxn_Media_Type_Id(date);
+    }
     public Integer fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(Integer customerType, String date) throws ParseException {
         return walletDao.fetchNoOfWalletByBalanceAndByCustomerTypeAndByDate(customerType, date);
     }

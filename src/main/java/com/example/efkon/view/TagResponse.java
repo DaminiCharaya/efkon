@@ -18,13 +18,13 @@ public class TagResponse {
 
     }
 
-    public TagResponse(Integer status, String statusDesc, Integer count, Integer customerType, String customerTypeStr,Integer month) {
+    public TagResponse(Integer status, String statusDesc, Integer count, Integer customerType, String customerTypeStr, Integer month) {
         this.status = status;
         this.statusDesc = statusDesc;
         this.count = count;
         this.customerType = customerType;
         this.customerTypeStr = customerTypeStr;
-        this.month=month;
+        this.month = month;
     }
 
     public Integer getCustomerType() {

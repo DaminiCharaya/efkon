@@ -37,6 +37,51 @@ public class WalletDaoImpl implements WalletDao {
     }
 
     @Override
+    public List<?> fetchWalletOfRetailerByBalanceAndByDateInTxn_Media_Type_Id(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM",
+                Locale.ENGLISH);
+        Date parsedDate = sdf.parse(date);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month = Cal.get(Calendar.MONTH) + 1;
+        Integer year = Cal.get(Calendar.YEAR);
+        Session session = entityManager.unwrap(Session.class);
+        Query query = session.createSQLQuery("SELECT COUNT(DISTINCT TXN.[WALLET_ID]) FROM [dbo].[MD_SM_CUST] CU INNER JOIN [dbo].[MD_SM_CARD] CA ON CA.[SM_CUST_ID]=CU.[SM_CUST_ID] INNER JOIN [dbo].[MD_SM_CUST_GROUP_ACCOUNT] CGA ON CGA.[SM_CUST_ID]=CA.[SM_CUST_ID] INNER JOIN [dbo].[TXN_SM_PURSE] TXN ON CGA.[WALLET_ID]=TXN.[WALLET_ID] AND CGA.[SM_CUST_ID]=TXN.[SM_CUST_ID] INNER JOIN [dbo].[TXN_FLEET_MEDIA_USAGE] TFM on  TFM.[WALLET_ID]=CGA.[WALLET_ID] WHERE CA.[SM_CARD_STATUS]=0 and CU.[CUST_TYPE]=1 AND CGA.[SM_TOT_AMT]<100 AND MONTH(CGA.[TIME_STAMP])='"+month+"' AND YEAR(CGA.[TIME_STAMP])='"+year+"' AND TXN.[SM_OPERN_ID] IN(102) AND TFM.[TXN_MEDIA_TYPE_ID] IN(1,2,24,26)");
+        return query
+                .list();
+    }
+
+
+    public List<?> fetchWalletOfCorporateByBalanceAndByDateInTxn_Media_Type_Id(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM",
+                Locale.ENGLISH);
+        Date parsedDate = sdf.parse(date);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month = Cal.get(Calendar.MONTH) + 1;
+        Integer year = Cal.get(Calendar.YEAR);
+        Session session = entityManager.unwrap(Session.class);
+        Query query = session.createSQLQuery("SELECT COUNT(DISTINCT TXN.[WALLET_ID]) FROM [dbo].[MD_SM_CUST] CU INNER JOIN [dbo].[MD_SM_CARD] CA ON CA.[SM_CUST_ID]=CU.[SM_CUST_ID] INNER JOIN [dbo].[MD_SM_CUST_GROUP_ACCOUNT] CGA ON CGA.[SM_CUST_ID]=CA.[SM_CUST_ID] INNER JOIN [dbo].[TXN_SM_PURSE] TXN ON CGA.[WALLET_ID]=TXN.[WALLET_ID] AND CGA.[SM_CUST_ID]=TXN.[SM_CUST_ID] INNER JOIN [dbo].[TXN_FLEET_MEDIA_USAGE] TFM on  TFM.[WALLET_ID]=CGA.[WALLET_ID] WHERE CA.[SM_CARD_STATUS]=0 and CU.[CUST_TYPE]=2 AND CGA.[SM_TOT_AMT]<100 AND MONTH(CGA.[TIME_STAMP])='"+month+"' AND YEAR(CGA.[TIME_STAMP])='"+year+"' AND TXN.[SM_OPERN_ID] IN(102) AND TFM.[TXN_MEDIA_TYPE_ID] IN(1,2,24,26)");
+        return query
+                .list();
+    }
+
+
+    public List<?> fetchWalletByBalanceAndByDateInTxn_Media_Type_Id(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM",
+                Locale.ENGLISH);
+        Date parsedDate = sdf.parse(date);
+        Calendar Cal = new GregorianCalendar();
+        Cal.setTime(parsedDate);
+        Integer month = Cal.get(Calendar.MONTH) + 1;
+        Integer year = Cal.get(Calendar.YEAR);
+        Session session = entityManager.unwrap(Session.class);
+        Query query = session.createSQLQuery("SELECT COUNT(DISTINCT TXN.[WALLET_ID]),CU.[CUST_TYPE] customerType FROM [dbo].[MD_SM_CUST] CU INNER JOIN [dbo].[MD_SM_CARD] CA ON CA.[SM_CUST_ID]=CU.[SM_CUST_ID] INNER JOIN [dbo].[MD_SM_CUST_GROUP_ACCOUNT] CGA ON CGA.[SM_CUST_ID]=CA.[SM_CUST_ID] INNER JOIN [dbo].[TXN_SM_PURSE] TXN ON CGA.[WALLET_ID]=TXN.[WALLET_ID] AND CGA.[SM_CUST_ID]=TXN.[SM_CUST_ID] INNER JOIN [dbo].[TXN_FLEET_MEDIA_USAGE] TFM on  TFM.[WALLET_ID]=CGA.[WALLET_ID] WHERE CA.[SM_CARD_STATUS]=0 AND CGA.[SM_TOT_AMT]<100 AND MONTH(CGA.[TIME_STAMP])='"+month+"' AND YEAR(CGA.[TIME_STAMP])='"+year+"' AND TXN.[SM_OPERN_ID] IN(102) AND TFM.[TXN_MEDIA_TYPE_ID] IN(1,2,24,26) group by CU.[CUST_TYPE]");
+        return query
+                .list();
+    }
+
+    @Override
     public Integer fetchNoOfWalletByBalance() {
 
         Session session = entityManager.unwrap(Session.class);

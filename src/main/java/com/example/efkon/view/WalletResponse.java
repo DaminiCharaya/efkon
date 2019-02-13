@@ -16,11 +16,11 @@ public class WalletResponse {
 
     }
 
-    public WalletResponse(Integer counts, Integer customerType, String customerTypeStr,Integer month) {
+    public WalletResponse(Integer counts, Integer customerType, String customerTypeStr, Integer month) {
         this.count = count;
         this.customerType = customerType;
         this.customerTypeStr = customerTypeStr;
-        this.month=month;
+        this.month = month;
     }
 
     public Integer getCustomerType() {
